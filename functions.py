@@ -34,6 +34,9 @@ def get_datalayer(url: str, index: int = 0, event: str = "None", navigation_step
                 el.location_once_scrolled_into_view
                 print("scrolled")
     data = {}
+    WebDriverWait(driver, 30).until(
+        lambda driver: driver.execute_script("return typeof dataLayer !== 'undefined' && dataLayer.length > 0")
+    )
     if event == "None":
         dataLayer = driver.execute_script(f"return window.dataLayer[{index}];")
         data. = dataLayer
@@ -43,7 +46,7 @@ def get_datalayer(url: str, index: int = 0, event: str = "None", navigation_step
         for ob in dataLayer:
             if "event" in ob and ob["event"] == event:
                 occ.append(ob)
-        data = occ[index]
+        data = occ
     return data[index]
 
 def get_sitemap(url: string, limit = None):
